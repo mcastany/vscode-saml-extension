@@ -7,6 +7,8 @@
     "engines": {
         "vscode": "^1.5.0"
     },
+    "author": "Marcos Castany",
+    "repository": "https://github.com/mcastany/vscode-saml-extension",
     "categories": [
         "Other"
     ],

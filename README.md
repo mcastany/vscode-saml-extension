@@ -19,10 +19,6 @@ The commands defined by this extensions are in the npm category.
 
 ## Extension Settings
 
-Include if your extension adds any VS Code settings through the `xmlSettings` extension point.
-
-For example:
-
 This extension contributes the following settings:
 
 - `samlExtension.sig_alg`: Configures signature algorithm used when signing an element. Default value `rsa-sha256`
