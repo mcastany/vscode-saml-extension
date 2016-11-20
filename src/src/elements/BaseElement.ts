@@ -53,6 +53,9 @@ export default class BaseElement{
     sig.keyInfoProvider = {
       getKeyInfo: (key, prefix) => {
         prefix = prefix ? prefix + ':' : prefix;
+        
+        if (!this._publicKey) return `<${prefix}X509Data></${prefix}X509Data>`;
+
         return `<${prefix}X509Data><${prefix}X509Certificate>${this._publicKey}</${prefix}X509Certificate></${prefix}X509Data>"`;
       }
     };
