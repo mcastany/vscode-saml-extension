@@ -29,7 +29,7 @@ export default class BaseElement{
   signaturePath: string;
   
   constructor(xml) {
-    var settings = vscode.workspace.getConfiguration("xmlSignature");
+    var settings = vscode.workspace.getConfiguration("samlExtension");
     this._sig_alg = settings.sig_alg;
     this._digest_alg = settings.digest_alg;
     this._publicKey = settings.publicKey; 

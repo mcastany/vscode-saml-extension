@@ -1,65 +1,32 @@
 # saml-extension README
 
-This is the README for your extension "saml-extension". After writing up a brief description, we recommend including the following sections.
+This extension adds some helper functionality to work with SAML elements
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+* SAML: Sign element
+* SAML: Verify signature
+* SMAL: Encode
+* SAML: Encode and deflate
+* SAML: Decode
+* SAML: Decode and Inflate
 
-For example if there is an image subfolder under your extension project workspace:
+## Using
 
-\!\[feature X\]\(images/feature-x.png\)
+The commands defined by this extensions are in the npm category.
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
-
-## Requirements
-
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+![command palette](images/cmds.png)
 
 ## Extension Settings
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+Include if your extension adds any VS Code settings through the `xmlSettings` extension point.
 
 For example:
 
 This extension contributes the following settings:
 
-* `myExtension.enable`: enable/disable this extension
-* `myExtension.thing`: set to `blah` to do something
-
-## Known Issues
-
-Calling out known issues can help limit users opening duplicate issues against your extension.
-
-## Release Notes
-
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
------------------------------------------------------------------------------------------------------------
-
-## Working with Markdown
-
-**Note:** You can author your README using Visual Studio Code.  Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on OSX or `Ctrl+\` on Windows and Linux)
-* Toggle preview (`Shift+CMD+V` on OSX or `Shift+Ctrl+V` on Windows and Linux)
-* Press `Ctrl+Space` (Windows, Linux) or `Cmd+Space` (OSX) to see a list of Markdown snippets
-
-### For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+- `samlExtension.sig_alg`: Configures signature algorithm used when signing an element. Default value `rsa-sha256`
+- `samlExtension.digest_alg`: Configure digest algorithm used when signing an element. Default value `sha256` 
+- `samlExtension.transforms`: Configure transforms used when signing an element. Default value `["http://www.w3.org/2000/09/xmldsig#enveloped-signature", "http://www.w3.org/2001/10/xml-exc-c14n#" ]`
+- `samlExtension.publicKey`: Configure public key used when verifying the signature an element. Default value ``
+- `samlExtension.signaturePrefix`: Configures the Signature Namespace prefix used when signing an Element. Default value `ds`

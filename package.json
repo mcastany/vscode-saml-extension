@@ -11,53 +11,53 @@
         "Other"
     ],
     "activationEvents": [
-        "onCommand:xmlSignature.sign",
-        "onCommand:xmlSignature.verify",
-        "onCommand:xmlSignature.encode",
-        "onCommand:xmlSignature.decode",
-        "onCommand:xmlSignature.encodeAndDeflate",
-        "onCommand:xmlSignature.decodeAndInflate"
+        "onCommand:samlExtension.sign",
+        "onCommand:samlExtension.verify",
+        "onCommand:samlExtension.encode",
+        "onCommand:samlExtension.decode",
+        "onCommand:samlExtension.encodeAndDeflate",
+        "onCommand:samlExtension.decodeAndInflate"
     ],
     "main": "./out/src/extension",
     "contributes": {
         "commands": [{
-            "command": "xmlSignature.sign",
+            "command": "samlExtension.sign",
             "title": "SAML: Sign element"
         }, {
-            "command": "xmlSignature.verify",
+            "command": "samlExtension.verify",
             "title": "SAML: Verify signature"
         }, {
-            "command": "xmlSignature.encode",
+            "command": "samlExtension.encode",
             "title": "SAML: Encode element"
         }, {
-            "command": "xmlSignature.decode",
+            "command": "samlExtension.decode",
             "title": "SAML: Decode element"
         }, {
-            "command": "xmlSignature.encodeAndDeflate",
+            "command": "samlExtension.encodeAndDeflate",
             "title": "SAML: Encode and Deflate element"
         }, {
-            "command": "xmlSignature.decodeAndInflate",
+            "command": "samlExtension.decodeAndInflate",
             "title": "SAML: Decode and Inflate element"
         }],
         "configuration": {
             "type": "object",
             "title": "XML Signature extension configuration",
             "properties": {
-                "xmlSignature.sig_alg": {
+                "samlExtension.sig_alg": {
                     "type": [
                         "string"
                     ],
                     "default": "rsa-sha256",
                     "description": "Configure Signature Algorithm"
                 },
-                "xmlSignature.digest_alg": {
+                "samlExtension.digest_alg": {
                     "type": [
                         "string"
                     ],
                     "default": "sha256",
                     "description": "Configure Digest Algorithm"
                 },
-                "xmlSignature.transforms": {
+                "samlExtension.transforms": {
                     "type": [
                         "array"
                     ],
@@ -67,14 +67,14 @@
                     ],
                     "description": "Configure Transforms for signing"
                 },
-                "xmlSignature.publicKey": {
+                "samlExtension.publicKey": {
                     "type": [
                         "string"
                     ],
                     "default": "",
                     "description": "Configure Public Key"
                 },
-                "xmlSignature.signaturePrefix": {
+                "samlExtension.signaturePrefix": {
                     "type": [
                         "string"
                     ],
