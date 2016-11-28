@@ -89,6 +89,14 @@ export function decodeAndInflate(){
   });
 }
 
+export function urlDecode(){
+  setText(decodeURIComponent(getText()));
+}
+
+export function urlEncode(){
+  setText(encodeURIComponent(getText()));
+}
+
 function getText(){
   var editor = vscode.window.activeTextEditor;
   if (!editor) {

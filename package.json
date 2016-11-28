@@ -2,7 +2,7 @@
     "name": "saml-extension",
     "displayName": "SAML Extension",
     "description": "SAML Extension",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "publisher": "mcastany",
     "engines": {
         "vscode": "^1.5.0"
@@ -19,7 +19,8 @@
         "onCommand:samlExtension.encode",
         "onCommand:samlExtension.decode",
         "onCommand:samlExtension.encodeAndDeflate",
-        "onCommand:samlExtension.decodeAndInflate"
+        "onCommand:samlExtension.decodeAndInflate",
+        "onCommand:samlExtension.decodeUrl"
     ],
     "main": "./out/src/extension",
     "contributes": {
@@ -41,6 +42,9 @@
         }, {
             "command": "samlExtension.decodeAndInflate",
             "title": "SAML: Decode and Inflate element"
+        },{
+            "command": "samlExtension.decodeUrl",
+            "title": "SAML: URL Decode"
         }],
         "configuration": {
             "type": "object",
