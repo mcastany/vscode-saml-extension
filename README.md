@@ -6,7 +6,7 @@ This extension adds some helper functionality to work with SAML elements
 
 * SAML: Sign element
 * SAML: Verify signature
-* SMAL: Encode
+* SAML: Encode
 * SAML: Encode and deflate
 * SAML: Decode
 * SAML: Decode and Inflate
