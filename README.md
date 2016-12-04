@@ -1,4 +1,4 @@
-# saml-extension README
+# SAML Extension
 
 This extension adds some helper functionality to work with SAML elements
 
