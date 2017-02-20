@@ -20,7 +20,8 @@
     "onCommand:samlExtension.decode",
     "onCommand:samlExtension.encodeAndDeflate",
     "onCommand:samlExtension.decodeAndInflate",
-    "onCommand:samlExtension.decodeUrl"
+    "onCommand:samlExtension.decodeUrl",
+    "onCommand:samlExtension.encodeUrl"
   ],
   "main": "./out/src/extension",
   "contributes": {
