@@ -45,6 +45,9 @@
         },{
             "command": "samlExtension.decodeUrl",
             "title": "SAML: URL Decode"
+        },{
+            "command": "samlExtension.encodeUrl",
+            "title": "SAML: URL Encode"
         }],
         "configuration": {
             "type": "object",
@@ -105,8 +108,8 @@
     },
     "dependencies": {
         "thumbprint": "0.0.1",
-        "xml-crypto": "^0.8.4",
-        "xmldom": "^0.1.22",
+        "xml-crypto": "0.8.4",
+        "xmldom": "0.1.22",
         "xpath": "0.0.23"
     }
 }
