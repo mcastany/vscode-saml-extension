@@ -18,7 +18,7 @@ export function sign(){
     return;
   }
 
-  vscode.window.showInputBox({prompt: 'Include Private Key? (it will be kept in memory)', value: suggestedPrivateKey })
+  vscode.window.showInputBox({prompt: 'Private Key? used to sign the request (it will be kept in memory)', value: suggestedPrivateKey })
     .then(val => {
       if (!val){ 
         return vscode.window.showErrorMessage('Certificate not provided');
