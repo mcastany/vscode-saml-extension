@@ -21,7 +21,8 @@
     "onCommand:samlExtension.encodeAndDeflate",
     "onCommand:samlExtension.decodeAndInflate",
     "onCommand:samlExtension.decodeUrl",
-    "onCommand:samlExtension.encodeUrl"
+    "onCommand:samlExtension.encodeUrl",
+    "onCommand:samlExtension.decrypt"
   ],
   "main": "./out/src/extension",
   "contributes": {
@@ -57,6 +58,10 @@
       {
         "command": "samlExtension.encodeUrl",
         "title": "SAML: URL Encode"
+      },
+      {
+        "command": "samlExtension.decrypt",
+        "title": "SAML: Decrypt"
       }
     ],
     "configuration": {
@@ -119,6 +124,7 @@
   "dependencies": {
     "thumbprint": "0.0.1",
     "xml-crypto": "0.8.4",
+    "xml-encryption": "^0.10.0",
     "xmldom": "0.1.22",
     "xpath": "0.0.23"
   }

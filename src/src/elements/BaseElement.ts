@@ -2,6 +2,7 @@ const vscode        = require('vscode');
 const xmlCrypto     = require('xml-crypto');
 const xpath         = require('xpath');
 const crypto        = require('crypto');
+const xmlenc        = require('xml-encryption');
 const SignedXml     = xmlCrypto.SignedXml;
 const utils         = require('../utils');
 const algorithms = {
@@ -110,4 +111,29 @@ export default class BaseElement{
       return [`Error checking signature: ${e}`];
     }
   } 
+
+  decrypt(key: string, cb){
+    if (!key) {
+      return cb(null, this._xml.toString());
+    }
+
+    var encryptedAssertion = this._xml.getElementsByTagNameNS('urn:oasis:names:tc:SAML:2.0:assertion', 'EncryptedAssertion');
+    if (encryptedAssertion.length > 1) {
+      return cb(new Error('A SAMLResponse can contains only one EncryptedAssertion element.'));
+    }
+
+    var encryptedToken = encryptedAssertion[0];
+    if (encryptedToken) {
+      var encryptedData = encryptedToken.getElementsByTagNameNS('http://www.w3.org/2001/04/xmlenc#', 'EncryptedData')[0];
+      if (!encryptedData) {
+        return cb(null,this._xml.toString());
+      }
+      
+      return xmlenc.decrypt(encryptedData, { key: key,}, (err, val) => {
+        if (err) return cb(err);
+
+        cb(null, this._xml.toString().replace(encryptedToken.toString(), val));
+      });
+    }
+  }
 }

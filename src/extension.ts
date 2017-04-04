@@ -15,6 +15,7 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(vscode.commands.registerCommand('samlExtension.decodeAndInflate', SAMLExtension.decodeAndInflate));
     context.subscriptions.push(vscode.commands.registerCommand('samlExtension.encodeUrl', SAMLExtension.urlEncode));
     context.subscriptions.push(vscode.commands.registerCommand('samlExtension.decodeUrl', SAMLExtension.urlDecode));
+    context.subscriptions.push(vscode.commands.registerCommand('samlExtension.decrypt', SAMLExtension.decrypt));
 }
 
 // this method is called when your extension is deactivated

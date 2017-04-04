@@ -59,6 +59,30 @@ export function verify(){
     }); 
 };
 
+export function decrypt(){
+  var text = getText();
+  if (!text){
+    return;
+  }
+
+  var samlElement = createSAMLElement(text);
+  if (!(samlElement instanceof BaseElement)){
+    return vscode.window.showErrorMessage('XML is not a valid SAML Element');    
+  }
+
+   vscode.window.showInputBox({prompt: 'Provide Decryption Key'})
+    .then(val => {
+      val = utils.formatCert(val || '');
+      samlElement.decrypt(val, (err, dec) => {
+        if (err) {
+          return vscode.window.showErrorMessage(err.message);
+        }
+        
+        setText(dec)
+      });
+    }); 
+};
+
 export function getThumbprint(){
   var text = getText();
 };
