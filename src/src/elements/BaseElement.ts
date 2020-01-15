@@ -38,15 +38,13 @@ export default class BaseElement{
     this._transforms = settings.transforms;
     this._signaturePrefix = settings.signaturePrefix;
     this._xml = xml;
-    this.idAttribute = 'ID';
   }
 
   signXml(key) {
     utils.removeHeaders(this._publicKey);
 
     var sig = new SignedXml(null, {
-      signatureAlgorithm: algorithms.signature[this._sig_alg],
-      idAttribute: this.idAttribute
+      signatureAlgorithm: algorithms.signature[this._sig_alg]
     });
 
     sig.addReference(this.reference, this._transforms, algorithms.digest[this._digest_alg]);
@@ -78,7 +76,7 @@ export default class BaseElement{
         return [];
       }
 
-      var sig = new xmlCrypto.SignedXml(null, { idAttribute: this.idAttribute });
+      var sig = new xmlCrypto.SignedXml();
       sig.keyInfoProvider = {
         getKeyInfo: function() {
           return '<X509Data></X509Data>';
