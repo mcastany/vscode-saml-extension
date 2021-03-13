@@ -125,7 +125,7 @@
     "thumbprint": "0.0.1",
     "xml-crypto": "github:nicosabena/xml-crypto#c14n-line-endings",
     "xml-encryption": "^0.10.0",
-    "xmldom": "0.1.22",
+    "xmldom": "0.5.0",
     "xpath": "0.0.23"
   }
 }
