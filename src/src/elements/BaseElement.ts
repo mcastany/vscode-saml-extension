@@ -16,6 +16,11 @@ const algorithms = {
   }
 };
 
+// xmlcrypto will use [ 'Id', 'ID', 'id' ] as possible ID attributes
+// https://github.com/yaronn/xml-crypto/blob/6b9723785fe9f34ba363175468ee4e498015cd78/lib/signed-xml.js#L312
+// we'll add this one too, seen on some SAML responses.
+const additionalIdAttribute = "AssertionID";
+
 export default class BaseElement{
   _sig_alg: string;
   _digest_alg: string;
@@ -44,7 +49,8 @@ export default class BaseElement{
     utils.removeHeaders(this._publicKey);
 
     var sig = new SignedXml(null, {
-      signatureAlgorithm: algorithms.signature[this._sig_alg]
+      signatureAlgorithm: algorithms.signature[this._sig_alg],
+      idAttribute: additionalIdAttribute
     });
 
     sig.addReference(this.reference, this._transforms, algorithms.digest[this._digest_alg]);
@@ -76,7 +82,7 @@ export default class BaseElement{
         return [];
       }
 
-      var sig = new xmlCrypto.SignedXml();
+      var sig = new xmlCrypto.SignedXml(null, { idAttribute: additionalIdAttribute });
       sig.keyInfoProvider = {
         getKeyInfo: function() {
           return '<X509Data></X509Data>';

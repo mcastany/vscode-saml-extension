@@ -9,6 +9,7 @@ import * as utils from './utils';
 
 const xmldom = require('xmldom');
 const zlib   = require('zlib');
+const ELEMENT_NODE = 1;
 
 let suggestedPrivateKey;
 
@@ -150,8 +151,16 @@ function setText(txt){
 
 function createSAMLElement(text):any{
   var xml = new xmldom.DOMParser().parseFromString(text);
+  var firstChild = xml.firstChild;
+  // skip processing instructions
+  while (firstChild && firstChild.nodeType !== ELEMENT_NODE) {
+    firstChild = firstChild.nextSibling;
+  }
+  if (!firstChild)
+    return 'Invalid XML';
 
-  var nodeName = xml.firstChild.nodeName;
+  var nodeName = firstChild.nodeName;
+  
   if (!nodeName)
     return 'Invalid XML';
 
