@@ -150,7 +150,7 @@ function setText(txt){
 }
 
 function createSAMLElement(text):any{
-  var xml = new xmldom.DOMParser().parseFromString(text);
+  var xml = new xmldom.DOMParser().parseFromString(utils.normalizeLineEndings(text));
   var firstChild = xml.firstChild;
   // skip processing instructions
   while (firstChild && firstChild.nodeType !== ELEMENT_NODE) {

@@ -55,3 +55,15 @@ export function certToPEM(cert) {
   cert = cert + "\n-----END CERTIFICATE-----\n";
   return cert;
 }
+
+export function normalizeLineEndings(xmlText) {
+  // normalize line endings
+  // this should be done once, before parsing the raw XML string
+  return xmlText.replace(/\r\n?/g, "\n");
+}
+
+export function encodeCarriageReturns(xmlText) {
+  // re-encode carriage returns that remain after line
+  // ending normalization.
+  return xmlText.replace(/\r/g, "&#13;");
+}

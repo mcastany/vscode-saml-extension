@@ -72,7 +72,8 @@ export default class BaseElement{
       prefix: this._signaturePrefix || ''
     });
 
-    return sig.getSignedXml();
+    // re-encode any previously encoded carriage return 
+    return utils.encodeCarriageReturns(sig.getSignedXml());
   }
 
   validateSignature(public_key?: string) {
@@ -136,7 +137,7 @@ export default class BaseElement{
       return xmlenc.decrypt(encryptedData, { key: key,}, (err, val) => {
         if (err) return cb(err);
 
-        cb(null, this._xml.toString().replace(encryptedToken.toString(), val));
+        cb(null, utils.encodeCarriageReturns(this._xml.toString().replace(encryptedToken.toString(), val)));
       });
     }
   }
