@@ -97,7 +97,14 @@
             "string"
           ],
           "default": "",
-          "description": "Configure Public Key"
+          "description": "Configure default public key certificate for signing and verification, in PEM format or raw base64 data"
+        },
+        "samlExtension.privateKey": {
+          "type": [
+            "string"
+          ],
+          "default": "",
+          "description": "Configure default private key for signing, in PEM format"
         },
         "samlExtension.signaturePrefix": {
           "type": [

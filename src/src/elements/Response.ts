@@ -20,13 +20,13 @@ export default class Response extends BaseElement {
       this.Assertion = new Assertion(xml);
   } 
 
-  signXml(key){
+  signXml(key, cert){
     let xml;
 
     if (this.signedResponse){
-      return super.signXml(key);
+      return super.signXml(key, cert);
     } else {
-      return this.Assertion.signXml(key);
+      return this.Assertion.signXml(key, cert);
     }
   }
 
