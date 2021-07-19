@@ -114,6 +114,10 @@ export function decrypt(){
 
 export function getThumbprint(){
   var text = getText();
+  if (!text) {
+    return;
+  }
+  setText(utils.calculateThumbprint(text));
 };
 
 export function encode(){
@@ -148,6 +152,15 @@ export function urlDecode(){
 
 export function urlEncode(){
   setText(encodeURIComponent(getText()));
+}
+
+export function formatCertificate() {
+  var cert = getText();
+  if (!cert) {
+    return;
+  }
+
+  setText(utils.certToPEM(cert));
 }
 
 function getText(){

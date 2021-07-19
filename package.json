@@ -22,6 +22,8 @@
     "onCommand:samlExtension.decodeAndInflate",
     "onCommand:samlExtension.decodeUrl",
     "onCommand:samlExtension.encodeUrl",
+    "onCommand:samlExtension.getThumbprint",
+    "onCommand:samlExtension.formatCertificate",
     "onCommand:samlExtension.decrypt"
   ],
   "main": "./out/src/extension",
@@ -58,6 +60,14 @@
       {
         "command": "samlExtension.encodeUrl",
         "title": "SAML: URL Encode"
+      },
+      {
+        "command": "samlExtension.getThumbprint",
+        "title": "SAML: Calculate a Certificate Thumbprint"
+      },
+      {
+        "command": "samlExtension.formatCertificate",
+        "title": "SAML: Format Certificate as PEM"
       },
       {
         "command": "samlExtension.decrypt",
