@@ -10,6 +10,9 @@ This extension adds some helper functionality to work with SAML elements
 * SAML: Encode and deflate
 * SAML: Decode
 * SAML: Decode and Inflate
+* SAML: Decrypt
+* SAML: Format certificate as PEM
+* SAML: Calculate a certificate thumbprint
 
 ## Using
 
