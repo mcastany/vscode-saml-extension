@@ -2,7 +2,7 @@
   "name": "saml-extension",
   "displayName": "SAML Extension",
   "description": "SAML Extension",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "publisher": "mcastany",
   "engines": {
     "vscode": "^1.5.0"
@@ -22,6 +22,8 @@
     "onCommand:samlExtension.decodeAndInflate",
     "onCommand:samlExtension.decodeUrl",
     "onCommand:samlExtension.encodeUrl",
+    "onCommand:samlExtension.getThumbprint",
+    "onCommand:samlExtension.formatCertificate",
     "onCommand:samlExtension.decrypt"
   ],
   "main": "./out/src/extension",
@@ -58,6 +60,14 @@
       {
         "command": "samlExtension.encodeUrl",
         "title": "SAML: URL Encode"
+      },
+      {
+        "command": "samlExtension.getThumbprint",
+        "title": "SAML: Calculate a Certificate Thumbprint"
+      },
+      {
+        "command": "samlExtension.formatCertificate",
+        "title": "SAML: Format Certificate as PEM"
       },
       {
         "command": "samlExtension.decrypt",
@@ -97,7 +107,14 @@
             "string"
           ],
           "default": "",
-          "description": "Configure Public Key"
+          "description": "Configure default public key certificate for signing and verification, in PEM format or raw base64 data"
+        },
+        "samlExtension.privateKey": {
+          "type": [
+            "string"
+          ],
+          "default": "",
+          "description": "Configure default private key for signing, in PEM format"
         },
         "samlExtension.signaturePrefix": {
           "type": [

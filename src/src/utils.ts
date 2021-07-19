@@ -9,7 +9,7 @@ export function removeHeaders(cert) {
   if (pem && pem.length > 0) {
     return pem[2].replace(/[\n|\r\n]/g, '');
   }
-  return null;
+  return cert;
 }
 
 export function formatCert(cert) {
@@ -54,4 +54,16 @@ export function certToPEM(cert) {
   cert = "-----BEGIN CERTIFICATE-----\n" + cert;
   cert = cert + "\n-----END CERTIFICATE-----\n";
   return cert;
+}
+
+export function normalizeLineEndings(xmlText) {
+  // normalize line endings
+  // this should be done once, before parsing the raw XML string
+  return xmlText.replace(/\r\n?/g, "\n");
+}
+
+export function encodeCarriageReturns(xmlText) {
+  // re-encode carriage returns that remain after line
+  // ending normalization.
+  return xmlText.replace(/\r/g, "&#13;");
 }

@@ -12,29 +12,54 @@ const zlib   = require('zlib');
 const ELEMENT_NODE = 1;
 
 let suggestedPrivateKey;
+let suggestedCertificate;
 
-export function sign(){
-  var text = getText();
+export async function sign(){
+  const settings = vscode.workspace.getConfiguration("samlExtension");
+  const text = getText();
   if (!text){
     return;
   }
 
-  vscode.window.showInputBox({prompt: 'Private Key? used to sign the request (it will be kept in memory)', value: suggestedPrivateKey })
-    .then(val => {
-      if (!val){ 
-        return vscode.window.showErrorMessage('Certificate not provided');
-      }
-      
-      suggestedPrivateKey = val;
-      val = utils.formatCert(val || '');
+  const samlElement = createSAMLElement(text);          
+  if (!(samlElement instanceof BaseElement)){
+    return vscode.window.showErrorMessage('XML is not a valid SAML Element');    
+  }
 
-      try{
-        var samlElement = createSAMLElement(text);          
-        setText(samlElement.signXml(val));
-      } catch(e){
-        return vscode.window.showErrorMessage(e.message);
-      } 
-    });
+  let privateKey = await vscode.window.showInputBox({
+    prompt: 'Private Key used to sign the request (it will be kept in memory). If blank, the "signaturePrivateKey" configured option will be used.', 
+    value: suggestedPrivateKey 
+  });
+  if (typeof privateKey === 'undefined') {
+    return;
+  }
+
+  suggestedPrivateKey = privateKey;
+  privateKey = privateKey || settings.privateKey;
+
+  if (!privateKey) {
+    return vscode.window.showErrorMessage("You'll need to provide a private key or configure a default in samlExtension.privateKey");
+  }
+
+  let certificate = await vscode.window.showInputBox({
+    prompt: 'Public Key Certificate to include in the signature. If blank, the "signatureCertificate" configured option will be used.', 
+    value: suggestedCertificate
+  });
+  if (typeof certificate === 'undefined') {
+    return;
+  }
+  suggestedCertificate = certificate;
+
+  certificate = certificate || settings.publicKey;
+  if (!certificate) {
+    return vscode.window.showErrorMessage("You'll need to provide a certificate or configure a default in samlExtension.publicKey");
+  }
+
+  try{
+    setText(samlElement.signXml(privateKey, certificate));
+  } catch(e){
+    return vscode.window.showErrorMessage(e.message);
+  } 
 };
 
 export function verify(){
@@ -73,6 +98,9 @@ export function decrypt(){
 
    vscode.window.showInputBox({prompt: 'Provide Decryption Key'})
     .then(val => {
+      if (typeof val === "undefined") {
+        return;
+      }
       val = utils.formatCert(val || '');
       samlElement.decrypt(val, (err, dec) => {
         if (err) {
@@ -86,6 +114,10 @@ export function decrypt(){
 
 export function getThumbprint(){
   var text = getText();
+  if (!text) {
+    return;
+  }
+  setText(utils.calculateThumbprint(text));
 };
 
 export function encode(){
@@ -122,6 +154,15 @@ export function urlEncode(){
   setText(encodeURIComponent(getText()));
 }
 
+export function formatCertificate() {
+  var cert = getText();
+  if (!cert) {
+    return;
+  }
+
+  setText(utils.certToPEM(cert));
+}
+
 function getText(){
   var editor = vscode.window.activeTextEditor;
   if (!editor) {
@@ -150,7 +191,7 @@ function setText(txt){
 }
 
 function createSAMLElement(text):any{
-  var xml = new xmldom.DOMParser().parseFromString(text);
+  var xml = new xmldom.DOMParser().parseFromString(utils.normalizeLineEndings(text));
   var firstChild = xml.firstChild;
   // skip processing instructions
   while (firstChild && firstChild.nodeType !== ELEMENT_NODE) {

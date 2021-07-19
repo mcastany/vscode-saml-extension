@@ -45,23 +45,22 @@ export default class BaseElement{
     this._xml = xml;
   }
 
-  signXml(key) {
-    utils.removeHeaders(this._publicKey);
-
+  signXml(privateKey, certificate) {
     var sig = new SignedXml(null, {
       signatureAlgorithm: algorithms.signature[this._sig_alg],
       idAttribute: additionalIdAttribute
     });
 
     sig.addReference(this.reference, this._transforms, algorithms.digest[this._digest_alg]);
-    sig.signingKey = key;
+    sig.signingKey = utils.formatCert(privateKey);
+
     sig.keyInfoProvider = {
       getKeyInfo: (key, prefix) => {
         prefix = prefix ? prefix + ':' : prefix;
         
-        if (!this._publicKey) return `<${prefix}X509Data></${prefix}X509Data>`;
+        if (!certificate) return `<${prefix}X509Data></${prefix}X509Data>`;
 
-        return `<${prefix}X509Data><${prefix}X509Certificate>${this._publicKey}</${prefix}X509Certificate></${prefix}X509Data>"`;
+        return `<${prefix}X509Data><${prefix}X509Certificate>${utils.removeHeaders(certificate)}</${prefix}X509Certificate></${prefix}X509Data>"`;
       }
     };
     sig.computeSignature(this._xml.toString(), {
@@ -72,7 +71,8 @@ export default class BaseElement{
       prefix: this._signaturePrefix || ''
     });
 
-    return sig.getSignedXml();
+    // re-encode any previously encoded carriage return 
+    return utils.encodeCarriageReturns(sig.getSignedXml());
   }
 
   validateSignature(public_key?: string) {
@@ -136,7 +136,7 @@ export default class BaseElement{
       return xmlenc.decrypt(encryptedData, { key: key,}, (err, val) => {
         if (err) return cb(err);
 
-        cb(null, this._xml.toString().replace(encryptedToken.toString(), val));
+        cb(null, utils.encodeCarriageReturns(this._xml.toString().replace(encryptedToken.toString(), val)));
       });
     }
   }
