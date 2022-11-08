@@ -140,7 +140,7 @@
   },
   "dependencies": {
     "thumbprint": "0.0.1",
-    "xml-crypto": "github:nicosabena/xml-crypto#c14n-line-endings",
+    "xml-crypto": "^1.5.3",
     "xml-encryption": "^0.10.0",
     "xmldom": "^0.6.0",
     "xpath": "0.0.32"
