@@ -2,7 +2,7 @@
   "name": "saml-extension",
   "displayName": "SAML Extension",
   "description": "SAML Extension",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "publisher": "mcastany",
   "engines": {
     "vscode": "^1.5.0"
@@ -23,7 +23,7 @@
     "onCommand:samlExtension.decodeUrl",
     "onCommand:samlExtension.encodeUrl",
     "onCommand:samlExtension.getThumbprint",
-    "onCommand:samlExtension.formatCertificate",
+    "onCommand:samlExtension.extractCertificate",
     "onCommand:samlExtension.decrypt"
   ],
   "main": "./out/src/extension",
@@ -66,8 +66,8 @@
         "title": "SAML: Calculate a Certificate Thumbprint"
       },
       {
-        "command": "samlExtension.formatCertificate",
-        "title": "SAML: Format Certificate as PEM"
+        "command": "samlExtension.extractCertificate",
+        "title": "SAML: Extract Certificate"
       },
       {
         "command": "samlExtension.decrypt",

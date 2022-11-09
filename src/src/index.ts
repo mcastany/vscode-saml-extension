@@ -5,6 +5,7 @@ import LogoutRequest from './elements/LogoutRequest';
 import LogoutResponse from './elements/LogoutResponse';
 import Response from './elements/Response';
 import BaseElement from './elements/BaseElement';
+
 import * as utils from './utils';
 
 const xmldom = require('xmldom');
@@ -154,13 +155,45 @@ export function urlEncode(){
   setText(encodeURIComponent(getText()));
 }
 
-export function formatCertificate() {
-  var cert = getText();
-  if (!cert) {
+export async function extractCertificate() {
+  const workspace = vscode.workspace;
+  if (!workspace) {
     return;
   }
 
-  setText(utils.certToPEM(cert));
+  var xmlText = getText();
+  if (!xmlText) {
+    return;
+  }
+  var samlElement = createSAMLElement(xmlText);
+  if (!(samlElement instanceof BaseElement)) {
+    return vscode.window.showErrorMessage("The text doesn't appear to be a valid SAML XML document");
+  }
+  const certs = samlElement.extractCertificates();
+  if (certs.length === 0) {
+    return vscode.window.showErrorMessage("Couldn't find an x509 certificate");
+  }
+  let cert;
+  // if there's just one, or they are all the same, don't bother showing the options
+  if (certs.length === 1 || certs.every(cert => cert.text === certs[0].text)) {
+    cert = certs[0];
+  } else {
+    const selection = await vscode.window.showQuickPick(certs.map(cert => cert.label), {
+      placeHolder: "Pick the certificate that you want to extract"
+    });
+    if (!selection) {
+      return;
+    }
+    cert = certs.find(cert => cert.label === selection);
+    if (!cert) {
+      return;
+    }
+  }
+  const textDocument = await workspace.openTextDocument( {
+    language: "text",
+    content: cert.text
+  });
+  vscode.window.showTextDocument(textDocument);
 }
 
 function getText(){
@@ -214,6 +247,7 @@ function createSAMLElement(text):any{
   if (nodeName.indexOf('LogoutResponse') > -1) 
     return new LogoutResponse(xml);
   if (nodeName.indexOf('Response') > -1) 
-    return new Response(xml);  
+    return new Response(xml);
+  return new BaseElement(xml);
 }
 
