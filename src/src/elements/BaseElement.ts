@@ -140,4 +140,66 @@ export default class BaseElement{
       });
     }
   }
+
+  // Creates a label for the certificate, showing the path until reaching the KeyInfo element.
+  // It includes the "use" attribute for KeyDescriptor, and the "type" for RoleDescriptor elements
+  // so you get things like:
+  // 'EntityDescriptor/IDPSSODescriptor/KeyDescriptor[use="signing"]' 
+  // and 
+  // 'EntityDescriptor/RoleDescriptor[type="fed:ApplicationServiceType"]/KeyDescriptor[use="signing"]'
+  //
+  // These labels are useful if there are multiple certs in the document and the user needs to choose one
+  static getCertificateLabel(xmlElement) {
+    const segments = [];
+    let parent = xmlElement;
+    while(parent.localName !== "KeyInfo") {
+      parent = parent.parentNode;
+    } 
+    parent = parent.parentNode;
+
+    while (parent) {
+      if (parent.localName) {
+        let segment = parent.localName;
+        if (parent.localName === "KeyDescriptor") {
+          const useAttribute = parent.attributes.getNamedItem("use");
+          if (useAttribute) {
+            segment += `[use="${useAttribute.value}"]`;
+          }
+        }
+
+        if (parent.localName === "RoleDescriptor") {
+          const typeAttribute = parent.attributes.getNamedItemNS("http://www.w3.org/2001/XMLSchema-instance", "type");
+          if (typeAttribute) {
+            segment += `[type="${typeAttribute.value}"]`;
+          }
+        }
+        segments.unshift(segment);
+      }
+
+      parent = parent.parentNode;
+    }
+
+    return segments.join("/");
+  }
+
+  extractCertificates() {
+    const allCerts = "//*[local-name(.)='KeyInfo' and namespace-uri(.)='http://www.w3.org/2000/09/xmldsig#']/*[local-name(.)='X509Data']/*[local-name(.)='X509Certificate']"
+    const certificates = xpath.select(allCerts, this._xml);
+
+    const results = [];
+
+    let index = 1;
+    for(const certificate of certificates) {
+      const certificateText = xpath.select("text()", certificate);
+      if (certificateText && certificateText.length === 1) {
+        results.push({
+          label: `${index} - ${BaseElement.getCertificateLabel(certificate)}`,
+          text: utils.certToPEM(certificateText[0].toString().trim())
+        });
+        index++;
+      }
+    }
+
+    return results;
+  }
 }
