@@ -49,7 +49,9 @@ export function certToPEM(cert) {
   if (/-----BEGIN CERTIFICATE-----/.test(cert)) {
     return cert;
   }
-
+  
+  // remove all non base64 characters
+  cert = cert.replace(/[^A-Za-z0-9+/=]/g, "");
   cert = cert.match(/.{1,64}/g).join('\n');
   cert = "-----BEGIN CERTIFICATE-----\n" + cert;
   cert = cert + "\n-----END CERTIFICATE-----\n";
