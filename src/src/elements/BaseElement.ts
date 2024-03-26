@@ -1,3 +1,5 @@
+import { calculateThumbprint } from "../utils";
+
 const vscode        = require('vscode');
 const xmlCrypto     = require('xml-crypto');
 const xpath         = require('xpath');
@@ -192,9 +194,10 @@ export default class BaseElement{
     for(const certificate of certificates) {
       const certificateText = xpath.select("text()", certificate);
       if (certificateText && certificateText.length === 1) {
+        const pem = utils.certToPEM(certificateText[0].toString().trim());
         results.push({
-          label: `${index} - ${BaseElement.getCertificateLabel(certificate)}`,
-          text: utils.certToPEM(certificateText[0].toString().trim())
+          label: `${index} - ${BaseElement.getCertificateLabel(certificate)} - ${calculateThumbprint(pem)}`,
+          text: pem
         });
         index++;
       }

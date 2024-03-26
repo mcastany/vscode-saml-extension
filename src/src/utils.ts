@@ -1,4 +1,4 @@
-const thumbprint    = require('thumbprint');
+const crypto        = require('crypto');
 const xmldom        = require('xmldom');
 const DOMParser     = xmldom.DOMParser;
 const whitespace    = /^\s+$/;
@@ -22,8 +22,11 @@ export function formatCert(cert) {
 }
 
 export function calculateThumbprint(pem) {
-  var cert = removeHeaders(pem);
-  return thumbprint.calculate(cert).toUpperCase();
+  const cert = removeHeaders(pem);
+  const shasum = crypto.createHash('sha1');
+  const der = Buffer.from(cert, 'base64').toString('binary')
+  shasum.update(der, 'binary');
+  return shasum.digest('hex');
 }
 
 export function removeEmptyNodes(node) {
